@@ -105,4 +105,13 @@ public class GameState implements States {
 			xVel = -4;
 		}
 	}
+	
+	/*Métodos criados para teste*/
+	public int getPlayerYPosition(int player) {
+		if(player == 0) {
+			return A.y;
+		} else {
+			return B.y;
+		}
+	}
 }

@@ -112,4 +112,10 @@ public class Game implements Runnable{
 	public States GetCurrentState() {
 		return StateManager.getState();
 	}
+
+
+	public boolean IsRunning() {
+		// TODO Auto-generated method stub
+		return Game.running;
+	}
 }

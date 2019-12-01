@@ -1,161 +1,309 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.sun.glass.events.KeyEvent;
 
 import pong.game.Game;
+import pong.states.GameState;
 
-class StateTest {
+public class StateTest{
+	
+	protected static final int THREAD_SLEEP_TIME = 2000;
+	protected static Game _game = new Game();
+	protected Robot _robot;
+	
+	protected static void Run() {
+		if(!_game.IsRunning()) {
+			_game.start();
+		}
+	}
+	
+	protected void GoToStart() {
+		try {
+			if(_game.IsRunning()) {
+				_robot.keyPress(KeyEvent.VK_ESCAPE);
+				Thread.sleep(500);
+				_robot.keyRelease(KeyEvent.VK_ESCAPE);
+				Thread.sleep(500);
+				_robot.keyPress(KeyEvent.VK_ESCAPE);
+				Thread.sleep(500);
+				_robot.keyRelease(KeyEvent.VK_ESCAPE);
+				Thread.sleep(500);
+				_robot.keyPress(KeyEvent.VK_UP);
+				_robot.keyRelease(KeyEvent.VK_UP);
+				Thread.sleep(500);
+				_robot.keyPress(KeyEvent.VK_UP);
+				_robot.keyRelease(KeyEvent.VK_UP);
+				Thread.sleep(500);
+			} else {
+				Run();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public StateTest() {
+		try {
+			_robot = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void States_V1_V2() {
+		
+		String executionOutput = "";
+		String expectedOutput = "";
+		
+		try	{
+			//V1, V2
+			GoToStart();
+			expectedOutput = "pong.states.HelpState";
+			
+			_robot.keyPress(KeyEvent.VK_DOWN);
+			_robot.keyRelease(KeyEvent.VK_DOWN);
+			Thread.sleep(THREAD_SLEEP_TIME);
 
-	@Test
-	void States_Cover_V1_V2() throws InterruptedException {
-		String executionOutput = "";
-		String expectedOutput = "pong.states.HelpState";
-		
-		try {
-			Game game = new Game();
-			game.start();
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			Robot r = new Robot();
-			r.keyPress(KeyEvent.VK_DOWN);
-			r.keyPress(KeyEvent.VK_ENTER);
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
 			
-			Thread.sleep(1000);
-			
-			executionOutput = game.GetCurrentState().getClass().getName();
-			
-		} catch (AWTException e) {
-			e.printStackTrace();
 		}
-		
-		assertEquals(expectedOutput, executionOutput);
 	}
 	
 	@Test
-	void States_Cover_V3() throws InterruptedException {
+	public void States_V3() {
 		String executionOutput = "";
-		String expectedOutput = "pong.states.FPSState";
+		String expectedOutput = "";
 		
-		try {
-			Game game = new Game();
-			game.start();
+		try	{
+			GoToStart();
+			expectedOutput = "pong.states.FPSState";
 			
-			Robot r = new Robot();
-			r.keyPress(KeyEvent.VK_F);
-			Thread.sleep(1000);
-			executionOutput = game.GetCurrentState().getClass().getName();
+			_robot.keyPress(KeyEvent.VK_F);
+			_robot.keyRelease(KeyEvent.VK_F);
+			Thread.sleep(THREAD_SLEEP_TIME);
+
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
 			
-		} catch (AWTException e) {
-			e.printStackTrace();
 		}
-		
-		
-		assertEquals(expectedOutput, executionOutput);
 	}
 	
 	@Test
-	void States_Cover_I1_I2_I3_I4_I5() throws InterruptedException {
+	public void States_V5() {
 		String executionOutput = "";
-		String expectedOutput = "pong.states.MenuState";
+		String expectedOutput = "";
 		
-		try {
-			Game game = new Game();
-			game.start();
+		try	{
+			GoToStart();
+			expectedOutput = "pong.states.MenuState";
 			
-			Robot r = new Robot();
+			_robot.keyPress(KeyEvent.VK_DOWN);
+			_robot.keyRelease(KeyEvent.VK_DOWN);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			r.keyPress(KeyEvent.VK_0);
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			r.keyPress(KeyEvent.VK_A);
-			r.keyPress(KeyEvent.VK_Z);
-			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			_robot.keyPress(KeyEvent.VK_ESCAPE);
+			_robot.keyRelease(KeyEvent.VK_ESCAPE);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			Thread.sleep(1000);
-			executionOutput = game.GetCurrentState().getClass().getName();
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
 			
-		} catch (AWTException e) {
-			e.printStackTrace();
 		}
-		
-		assertEquals(expectedOutput, executionOutput);
 	}
 	
 	@Test
-	void States_Cover_V5() throws InterruptedException {
+	public void States_V11() {
 		String executionOutput = "";
-		String expectedOutput = "pong.states.MenuState";
+		String expectedOutput = "";
 		
-		try {
-			Game game = new Game();
-			game.start();
+		try	{
+			GoToStart();
+			expectedOutput = "pong.states.MenuState";
 			
-			Robot r = new Robot();
-			r.keyPress(KeyEvent.VK_DOWN);
-			r.keyPress(KeyEvent.VK_ENTER);
-			r.keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(1000);
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			executionOutput = game.GetCurrentState().getClass().getName();
+			_robot.keyPress(KeyEvent.VK_ESCAPE);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			_robot.keyRelease(KeyEvent.VK_ESCAPE);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-		} catch (AWTException e) {
-			e.printStackTrace();
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
+			
 		}
-		
-		assertEquals(expectedOutput, executionOutput);
 	}
 	
 	@Test
-	void States_Cover_I6() throws InterruptedException {
+	public void States_I1_I2_I3_I4_I5() {
 		String executionOutput = "";
-		String expectedOutput = "pong.states.HelpState";
+		String expectedOutput = "";
 		
-		try {
-			Game game = new Game();
-			game.start();
+		try	{
+			GoToStart();
+			expectedOutput = "pong.states.MenuState";
 			
-			Robot r = new Robot();
-			r.keyPress(KeyEvent.VK_DOWN);
-			r.keyPress(KeyEvent.VK_ENTER);
-			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-			Thread.sleep(1000);
+			_robot.keyPress(KeyEvent.VK_0);
+			_robot.keyRelease(KeyEvent.VK_0);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			executionOutput = game.GetCurrentState().getClass().getName();
+			_robot.keyPress(KeyEvent.VK_A);
+			_robot.keyRelease(KeyEvent.VK_A);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-		} catch (AWTException e) {
-			e.printStackTrace();
+			_robot.keyPress(KeyEvent.VK_Z);
+			_robot.keyRelease(KeyEvent.VK_Z);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
+			
 		}
-		
-		assertEquals(expectedOutput, executionOutput);
 	}
 	
 	@Test
-	void States_Cover_V11() throws InterruptedException {
+	public void States_I6() {
 		String executionOutput = "";
-		String expectedOutput = "pong.states.MenuState";
+		String expectedOutput = "";
+		
+		try	{
+			GoToStart();
+			expectedOutput = "pong.states.HelpState";
+			
+			_robot.keyPress(KeyEvent.VK_DOWN);
+			_robot.keyRelease(KeyEvent.VK_DOWN);
+			Thread.sleep(THREAD_SLEEP_TIME);
+
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+		} catch(Exception e) {
+			
+		}
+	}
+	
+	@Test
+	public void Behaviour_Cover_V6_V8() {
 		
 		try {
-			Game game = new Game();
-			game.start();
+			GoToStart();
 			
-			Robot r = new Robot();
-			r.keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(1000);
-			r.keyPress(KeyEvent.VK_ESCAPE);
-			Thread.sleep(1000);
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
 			
-			executionOutput = game.GetCurrentState().getClass().getName();
+			GameState gamestate = (GameState)_game.GetCurrentState();
+			int oldYPosLeft = gamestate.getPlayerYPosition(0);
+			int oldYPosRight = gamestate.getPlayerYPosition(1);
 			
-		} catch (AWTException e) {
+			_robot.keyPress(KeyEvent.VK_W);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			_robot.keyPress(KeyEvent.VK_UP);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			_robot.keyRelease(KeyEvent.VK_UP);
+			_robot.keyRelease(KeyEvent.VK_W);
+			Thread.sleep(THREAD_SLEEP_TIME);
+						
+			int newYPosLeft = gamestate.getPlayerYPosition(0);
+			int newYPosRight = gamestate.getPlayerYPosition(1);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			assertTrue(oldYPosLeft > newYPosLeft);
+			assertTrue(oldYPosRight > newYPosRight);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void Behaviour_Cover_V7_V9() {
 		
-		assertEquals(expectedOutput, executionOutput);
+		try {
+			GoToStart();
+			
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			GameState gamestate = (GameState)_game.GetCurrentState();
+			int oldYPosLeft = gamestate.getPlayerYPosition(0);
+			int oldYPosRight = gamestate.getPlayerYPosition(1);
+			
+			_robot.keyPress(KeyEvent.VK_S);
+			_robot.keyPress(KeyEvent.VK_DOWN);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			_robot.keyRelease(KeyEvent.VK_S);
+			_robot.keyRelease(KeyEvent.VK_DOWN);
+			Thread.sleep(THREAD_SLEEP_TIME);
+						
+			int newYPosLeft = gamestate.getPlayerYPosition(0);
+			int newYPosRight = gamestate.getPlayerYPosition(1);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			assertTrue(oldYPosLeft < newYPosLeft);
+			assertTrue(oldYPosRight < newYPosRight);
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void Behaviour_Cover_V11() {
+		
+		try {
+			GoToStart();
+			
+			String executionOutput = "";
+			String expectedOutput = "pong.states.MenuState";
+			
+			_robot.keyPress(KeyEvent.VK_ENTER);
+			_robot.keyRelease(KeyEvent.VK_ENTER);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			_robot.keyPress(KeyEvent.VK_ESCAPE);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			_robot.keyRelease(KeyEvent.VK_ESCAPE);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			executionOutput = _game.GetCurrentState().getClass().getName();
+			assertEquals(expectedOutput, executionOutput);
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
