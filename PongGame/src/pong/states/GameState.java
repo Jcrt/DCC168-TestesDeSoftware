@@ -114,4 +114,34 @@ public class GameState implements States {
 			return B.y;
 		}
 	}
+	
+	public Player GetPlayer(boolean isPlayer1) {
+		if(isPlayer1)
+			return A;
+		else
+			return B;
+	}
+	
+	public void SetPlayer(Player player, boolean isPlayer1) {
+		if(isPlayer1)
+			this.A = player;
+		else 
+			this.B = player;
+	}
+	
+	public void SetBall(Rectangle r) {
+		ball = r;
+	}
+	
+	public void CallLimits() {
+		limits();
+	}
+	
+	public int GetXVel() {
+		return xVel;
+	}
+	
+	public void SetXVel(int xVelNew) {
+		xVel = xVelNew;
+	}
 }

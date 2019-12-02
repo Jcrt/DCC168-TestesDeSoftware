@@ -2,19 +2,15 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.InputEvent;
-
 import org.junit.Test;
-
+import org.junit.jupiter.api.Assertions;
 import com.sun.glass.events.KeyEvent;
-
 import pong.game.Game;
 import pong.states.GameState;
 
-public class StateTest{
+public class FunctionalTest{
 	
 	protected static final int THREAD_SLEEP_TIME = 2000;
 	protected static Game _game = new Game();
@@ -52,7 +48,7 @@ public class StateTest{
 		}
 	}
 	
-	public StateTest() {
+	public FunctionalTest() {
 		try {
 			_robot = new Robot();
 		} catch (AWTException e) {
@@ -181,6 +177,14 @@ public class StateTest{
 			_robot.keyRelease(KeyEvent.VK_Z);
 			Thread.sleep(THREAD_SLEEP_TIME);
 			
+			_robot.keyPress(KeyEvent.VK_RIGHT);
+			_robot.keyRelease(KeyEvent.VK_RIGHT);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
+			_robot.keyPress(KeyEvent.VK_LEFT);
+			_robot.keyRelease(KeyEvent.VK_LEFT);
+			Thread.sleep(THREAD_SLEEP_TIME);
+			
 			executionOutput = _game.GetCurrentState().getClass().getName();
 			assertEquals(expectedOutput, executionOutput);
 		} catch(Exception e) {
@@ -305,5 +309,19 @@ public class StateTest{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void KeysGreaterThan255() throws InterruptedException {
+		GoToStart();
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			_robot.keyPress(KeyEvent.VK_LEFT_PARENTHESIS);
+			Thread.sleep(THREAD_SLEEP_TIME);
+		});
+		
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			_robot.keyRelease(KeyEvent.VK_LEFT_PARENTHESIS);
+			Thread.sleep(THREAD_SLEEP_TIME);
+		});
 	}
 }
