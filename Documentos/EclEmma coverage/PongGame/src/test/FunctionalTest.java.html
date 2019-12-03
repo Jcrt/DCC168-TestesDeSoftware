@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FunctionalTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">PongGame (02/12/2019 01:03:35)</a> &gt; <a href="../../index.html" class="el_group">PongGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">FunctionalTest.java</span></div><h1>FunctionalTest.java</h1><pre class="source lang-java linenums">package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.awt.AWTException;
+import java.awt.Robot;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import com.sun.glass.events.KeyEvent;
+import pong.game.Game;
+import pong.states.GameState;
+
+public class FunctionalTest{
+	
+	protected static final int THREAD_SLEEP_TIME = 2000;
+<span class="fc" id="L16">	protected static Game _game = new Game();</span>
+	protected Robot _robot;
+	
+	protected static void Run() {
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">		if(!_game.IsRunning()) {</span>
+<span class="fc" id="L21">			_game.start();</span>
+		}
+<span class="fc" id="L23">	}</span>
+	
+	protected void GoToStart() {
+		try {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">			if(_game.IsRunning()) {</span>
+<span class="fc" id="L28">				_robot.keyPress(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L29">				Thread.sleep(500);</span>
+<span class="fc" id="L30">				_robot.keyRelease(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L31">				Thread.sleep(500);</span>
+<span class="fc" id="L32">				_robot.keyPress(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L33">				Thread.sleep(500);</span>
+<span class="fc" id="L34">				_robot.keyRelease(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L35">				Thread.sleep(500);</span>
+<span class="fc" id="L36">				_robot.keyPress(KeyEvent.VK_UP);</span>
+<span class="fc" id="L37">				_robot.keyRelease(KeyEvent.VK_UP);</span>
+<span class="fc" id="L38">				Thread.sleep(500);</span>
+<span class="fc" id="L39">				_robot.keyPress(KeyEvent.VK_UP);</span>
+<span class="fc" id="L40">				_robot.keyRelease(KeyEvent.VK_UP);</span>
+<span class="fc" id="L41">				Thread.sleep(500);</span>
+<span class="fc" id="L42">			} else {</span>
+<span class="fc" id="L43">				Run();</span>
+			}
+<span class="pc" id="L45">		} catch (InterruptedException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L47">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L49">	}</span>
+	
+<span class="fc" id="L51">	public FunctionalTest() {</span>
+		try {
+<span class="fc" id="L53">			_robot = new Robot();</span>
+<span class="pc" id="L54">		} catch (AWTException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L56">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L58">	}</span>
+	
+	@Test
+	public void States_V1_V2() {
+		
+<span class="fc" id="L63">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L64">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+			//V1, V2
+<span class="fc" id="L68">			GoToStart();</span>
+<span class="fc" id="L69">			expectedOutput = &quot;pong.states.HelpState&quot;;</span>
+			
+<span class="fc" id="L71">			_robot.keyPress(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L72">			_robot.keyRelease(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L73">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+
+<span class="fc" id="L75">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L76">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L77">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L79">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L80">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L81">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L84">	}</span>
+	
+	@Test
+	public void States_V3() {
+<span class="fc" id="L88">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L89">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+<span class="fc" id="L92">			GoToStart();</span>
+<span class="fc" id="L93">			expectedOutput = &quot;pong.states.FPSState&quot;;</span>
+			
+<span class="fc" id="L95">			_robot.keyPress(KeyEvent.VK_F);</span>
+<span class="fc" id="L96">			_robot.keyRelease(KeyEvent.VK_F);</span>
+<span class="fc" id="L97">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+
+<span class="fc" id="L99">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L100">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L101">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L104">	}</span>
+	
+	@Test
+	public void States_V5() {
+<span class="fc" id="L108">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L109">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+<span class="fc" id="L112">			GoToStart();</span>
+<span class="fc" id="L113">			expectedOutput = &quot;pong.states.MenuState&quot;;</span>
+			
+<span class="fc" id="L115">			_robot.keyPress(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L116">			_robot.keyRelease(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L117">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L119">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L120">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L121">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L123">			_robot.keyPress(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L124">			_robot.keyRelease(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L125">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L127">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L128">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L129">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L132">	}</span>
+	
+	@Test
+	public void States_V11() {
+<span class="fc" id="L136">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L137">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+<span class="fc" id="L140">			GoToStart();</span>
+<span class="fc" id="L141">			expectedOutput = &quot;pong.states.MenuState&quot;;</span>
+			
+<span class="fc" id="L143">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L144">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L145">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L147">			_robot.keyPress(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L148">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L149">			_robot.keyRelease(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L150">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L152">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L153">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L154">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L157">	}</span>
+	
+	@Test
+	public void States_I1_I2_I3_I4_I5() {
+<span class="fc" id="L161">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L162">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+<span class="fc" id="L165">			GoToStart();</span>
+<span class="fc" id="L166">			expectedOutput = &quot;pong.states.MenuState&quot;;</span>
+			
+<span class="fc" id="L168">			_robot.keyPress(KeyEvent.VK_0);</span>
+<span class="fc" id="L169">			_robot.keyRelease(KeyEvent.VK_0);</span>
+<span class="fc" id="L170">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L172">			_robot.keyPress(KeyEvent.VK_A);</span>
+<span class="fc" id="L173">			_robot.keyRelease(KeyEvent.VK_A);</span>
+<span class="fc" id="L174">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L176">			_robot.keyPress(KeyEvent.VK_Z);</span>
+<span class="fc" id="L177">			_robot.keyRelease(KeyEvent.VK_Z);</span>
+<span class="fc" id="L178">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L180">			_robot.keyPress(KeyEvent.VK_RIGHT);</span>
+<span class="fc" id="L181">			_robot.keyRelease(KeyEvent.VK_RIGHT);</span>
+<span class="fc" id="L182">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L184">			_robot.keyPress(KeyEvent.VK_LEFT);</span>
+<span class="fc" id="L185">			_robot.keyRelease(KeyEvent.VK_LEFT);</span>
+<span class="fc" id="L186">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L188">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L189">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L190">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L193">	}</span>
+	
+	@Test
+	public void States_I6() {
+<span class="fc" id="L197">		String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L198">		String expectedOutput = &quot;&quot;;</span>
+		
+		try	{
+<span class="fc" id="L201">			GoToStart();</span>
+<span class="fc" id="L202">			expectedOutput = &quot;pong.states.HelpState&quot;;</span>
+			
+<span class="fc" id="L204">			_robot.keyPress(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L205">			_robot.keyRelease(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L206">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+
+<span class="fc" id="L208">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L209">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L210">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L212">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L213">			assertEquals(expectedOutput, executionOutput);</span>
+<span class="pc" id="L214">		} catch(Exception e) {</span>
+			
+		}
+<span class="fc" id="L217">	}</span>
+	
+	@Test
+	public void Behaviour_Cover_V6_V8() {
+		
+		try {
+<span class="fc" id="L223">			GoToStart();</span>
+			
+<span class="fc" id="L225">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L226">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L227">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L229">			GameState gamestate = (GameState)_game.GetCurrentState();</span>
+<span class="fc" id="L230">			int oldYPosLeft = gamestate.getPlayerYPosition(0);</span>
+<span class="fc" id="L231">			int oldYPosRight = gamestate.getPlayerYPosition(1);</span>
+			
+<span class="fc" id="L233">			_robot.keyPress(KeyEvent.VK_W);</span>
+<span class="fc" id="L234">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L235">			_robot.keyPress(KeyEvent.VK_UP);</span>
+<span class="fc" id="L236">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L238">			_robot.keyRelease(KeyEvent.VK_UP);</span>
+<span class="fc" id="L239">			_robot.keyRelease(KeyEvent.VK_W);</span>
+<span class="fc" id="L240">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+						
+<span class="fc" id="L242">			int newYPosLeft = gamestate.getPlayerYPosition(0);</span>
+<span class="fc" id="L243">			int newYPosRight = gamestate.getPlayerYPosition(1);</span>
+<span class="fc" id="L244">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">			assertTrue(oldYPosLeft &gt; newYPosLeft);</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">			assertTrue(oldYPosRight &gt; newYPosRight);</span>
+<span class="pc" id="L248">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L249">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L251">	}</span>
+	
+	@Test
+	public void Behaviour_Cover_V7_V9() {
+		
+		try {
+<span class="fc" id="L257">			GoToStart();</span>
+			
+<span class="fc" id="L259">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L260">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L261">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L263">			GameState gamestate = (GameState)_game.GetCurrentState();</span>
+<span class="fc" id="L264">			int oldYPosLeft = gamestate.getPlayerYPosition(0);</span>
+<span class="fc" id="L265">			int oldYPosRight = gamestate.getPlayerYPosition(1);</span>
+			
+<span class="fc" id="L267">			_robot.keyPress(KeyEvent.VK_S);</span>
+<span class="fc" id="L268">			_robot.keyPress(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L269">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L271">			_robot.keyRelease(KeyEvent.VK_S);</span>
+<span class="fc" id="L272">			_robot.keyRelease(KeyEvent.VK_DOWN);</span>
+<span class="fc" id="L273">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+						
+<span class="fc" id="L275">			int newYPosLeft = gamestate.getPlayerYPosition(0);</span>
+<span class="fc" id="L276">			int newYPosRight = gamestate.getPlayerYPosition(1);</span>
+<span class="fc" id="L277">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">			assertTrue(oldYPosLeft &lt; newYPosLeft);</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">			assertTrue(oldYPosRight &lt; newYPosRight);</span>
+			
+<span class="pc" id="L282">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L283">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L285">	}</span>
+	
+	@Test
+	public void Behaviour_Cover_V11() {
+		
+		try {
+<span class="fc" id="L291">			GoToStart();</span>
+			
+<span class="fc" id="L293">			String executionOutput = &quot;&quot;;</span>
+<span class="fc" id="L294">			String expectedOutput = &quot;pong.states.MenuState&quot;;</span>
+			
+<span class="fc" id="L296">			_robot.keyPress(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L297">			_robot.keyRelease(KeyEvent.VK_ENTER);</span>
+<span class="fc" id="L298">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L300">			_robot.keyPress(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L301">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L303">			_robot.keyRelease(KeyEvent.VK_ESCAPE);</span>
+<span class="fc" id="L304">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+			
+<span class="fc" id="L306">			executionOutput = _game.GetCurrentState().getClass().getName();</span>
+<span class="fc" id="L307">			assertEquals(expectedOutput, executionOutput);</span>
+			
+<span class="pc" id="L309">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L310">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L312">	}</span>
+	
+	@Test
+	public void KeysGreaterThan255() throws InterruptedException {
+<span class="fc" id="L316">		GoToStart();</span>
+<span class="fc" id="L317">		Assertions.assertThrows(IllegalArgumentException.class, () -&gt; {</span>
+<span class="nc" id="L318">			_robot.keyPress(KeyEvent.VK_LEFT_PARENTHESIS);</span>
+<span class="nc" id="L319">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="nc" id="L320">		});</span>
+		
+<span class="fc" id="L322">		Assertions.assertThrows(IllegalArgumentException.class, () -&gt; {</span>
+<span class="nc" id="L323">			_robot.keyRelease(KeyEvent.VK_LEFT_PARENTHESIS);</span>
+<span class="nc" id="L324">			Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="nc" id="L325">		});</span>
+<span class="fc" id="L326">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>PongGame (02/12/2019 01:03:35)</div></body></html>

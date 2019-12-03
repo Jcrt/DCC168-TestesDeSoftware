@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">PongGame (02/12/2019 01:03:35)</a> &gt; <a href="../../index.html" class="el_group">PongGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pong.game</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package pong.game;
+
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.image.BufferStrategy;
+
+import pong.input.KeyManager;
+import pong.states.StateManager;
+import pong.states.States;
+import pong.view.Tela;
+
+public class Game implements Runnable{
+
+	
+	public static final int width = 800, height = 500;
+	private Thread t;
+<span class="fc" id="L17">	private static boolean running = false;</span>
+	private Tela tela;
+	
+	private StateManager sm;
+	private KeyManager km;
+	
+<span class="fc" id="L23">	public Game() {</span>
+<span class="fc" id="L24">		tela = new Tela(&quot;Pong Game by Arthur Bockmann Grossi&quot; ,width, height);</span>
+		
+<span class="fc" id="L26">		sm = new StateManager();</span>
+<span class="fc" id="L27">		km = new KeyManager();</span>
+<span class="fc" id="L28">		tela.setKeyListener(km);</span>
+<span class="fc" id="L29">		StateManager.setState(StateManager.MENU);</span>
+<span class="fc" id="L30">	}</span>
+	
+	
+	@Override
+	public void run() {
+<span class="fc" id="L35">		init();</span>
+		
+<span class="fc" id="L37">		int FPS = 60;</span>
+<span class="fc" id="L38">		double timePerTick = 1000000000/FPS;</span>
+<span class="fc" id="L39">		double delta = 0;</span>
+		long now;
+<span class="fc" id="L41">		long lastTime = System.nanoTime();</span>
+		
+		
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		while(running) {</span>
+<span class="fc" id="L45">			now = System.nanoTime();</span>
+<span class="fc" id="L46">			delta += (now - lastTime)/timePerTick;</span>
+<span class="fc" id="L47">			lastTime = now;</span>
+			
+			
+<span class="fc bfc" id="L50" title="All 2 branches covered.">			if(delta &gt;=1) {</span>
+<span class="fc" id="L51">				update();</span>
+<span class="fc" id="L52">				render();</span>
+<span class="fc" id="L53">				delta--;</span>
+			}
+		}
+<span class="fc" id="L56">		stop();</span>
+		
+<span class="fc" id="L58">	}</span>
+	
+<span class="fc" id="L60">	private void init() {}</span>
+	
+	private void update() {
+<span class="fc" id="L63">		sm.update();</span>
+<span class="fc" id="L64">		km.update();</span>
+<span class="fc" id="L65">	}</span>
+	
+	private void render() {
+<span class="fc" id="L68">		BufferStrategy bs = tela.getBufferStrategy();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		if(bs == null) {</span>
+<span class="fc" id="L70">			tela.createBufferStrategy();</span>
+<span class="fc" id="L71">			bs = tela.getBufferStrategy();</span>
+		}
+		
+<span class="fc" id="L74">		Graphics g = bs.getDrawGraphics();</span>
+<span class="fc" id="L75">		g.clearRect(0, 0, width, height);</span>
+		
+<span class="fc" id="L77">		sm.render(g);</span>
+		
+<span class="fc" id="L79">		g.dispose();</span>
+<span class="fc" id="L80">		bs.show();</span>
+<span class="fc" id="L81">		Toolkit.getDefaultToolkit().sync();</span>
+		
+<span class="fc" id="L83">	}</span>
+
+	public synchronized void start() {
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if(t!=null) return;</span>
+
+<span class="fc" id="L88">		t = new Thread(this);</span>
+<span class="fc" id="L89">		Game.running = true;</span>
+<span class="fc" id="L90">		t.start();</span>
+<span class="fc" id="L91">	}</span>
+	
+	public synchronized void stop() {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if(t == null) return;</span>
+		
+		try {
+<span class="nc" id="L97">			t.join();</span>
+<span class="nc" id="L98">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L99">			e.printStackTrace();</span>
+		}finally {
+<span class="nc" id="L101">			Game.running = false;</span>
+		}
+		
+<span class="nc" id="L104">	}</span>
+
+	public static void stopGame(int code) {
+<span class="nc" id="L107">		Game.running = false;</span>
+<span class="nc" id="L108">		System.exit(code);</span>
+<span class="nc" id="L109">	}</span>
+	
+	//Método criado para testes de software
+	public States GetCurrentState() {
+<span class="fc" id="L113">		return StateManager.getState();</span>
+	}
+
+
+	public boolean IsRunning() {
+		// TODO Auto-generated method stub
+<span class="fc" id="L119">		return Game.running;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>PongGame (02/12/2019 01:03:35)</div></body></html>

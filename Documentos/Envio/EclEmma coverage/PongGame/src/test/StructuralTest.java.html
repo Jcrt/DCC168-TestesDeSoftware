@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StructuralTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">PongGame (02/12/2019 01:03:35)</a> &gt; <a href="../../index.html" class="el_group">PongGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">StructuralTest.java</span></div><h1>StructuralTest.java</h1><pre class="source lang-java linenums">package test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.AWTException;
+import java.awt.Button;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
+import org.junit.jupiter.api.Test;
+
+import javafx.scene.input.KeyCode;
+import pong.elements.Player;
+import pong.game.Game;
+import pong.input.KeyManager;
+import pong.states.GameState;
+
+class StructuralTest {
+	protected static final int THREAD_SLEEP_TIME = 2000;
+<span class="fc" id="L21">	protected static Game _game = new Game();</span>
+	
+<span class="fc" id="L23">	public StructuralTest() {</span>
+
+<span class="fc" id="L25">	}</span>
+	
+	@Test
+	void RunTest() throws InterruptedException {
+		
+<span class="fc" id="L30">		_game.run();</span>
+<span class="fc" id="L31">		Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L32">		boolean isRunning1 = _game.IsRunning();</span>
+		
+<span class="fc" id="L34">		_game.run();</span>
+<span class="fc" id="L35">		Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L36">		boolean isRunning2 = _game.IsRunning();</span>
+		
+<span class="fc" id="L38">		assertEquals(isRunning1, isRunning2);</span>
+		
+<span class="fc" id="L40">		_game.stop();</span>
+<span class="fc" id="L41">		Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L42">		boolean isRunning3 = _game.IsRunning();</span>
+		
+<span class="fc" id="L44">		_game.stop();</span>
+<span class="fc" id="L45">		Thread.sleep(THREAD_SLEEP_TIME);</span>
+<span class="fc" id="L46">		boolean isRunning4 = _game.IsRunning();</span>
+		
+<span class="fc" id="L48">		assertEquals(isRunning3, isRunning4);</span>
+<span class="fc" id="L49">	}</span>
+	
+	/* Método não testável, pois ao chamar Game.stopGame() todas
+	 * as instancias do jogo param de funcionar, ocasionando o fim da aplicação
+	 * 
+	@Test
+	public void StopGame() throws InterruptedException {
+		GoToStart();
+		
+		_robot.keyPress(KeyEvent.VK_DOWN);
+		_robot.keyRelease(KeyEvent.VK_DOWN);
+		Thread.sleep(THREAD_SLEEP_TIME);
+		
+		_robot.keyPress(KeyEvent.VK_DOWN);
+		_robot.keyRelease(KeyEvent.VK_DOWN);
+		Thread.sleep(THREAD_SLEEP_TIME);
+		
+		_robot.keyPress(KeyEvent.VK_ENTER);
+		_robot.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(THREAD_SLEEP_TIME);
+	}
+	*/
+	
+	@Test
+	public void GameState_GetSide_Test() {
+<span class="fc" id="L74">		GameState state = new GameState();</span>
+<span class="fc" id="L75">		state.init();</span>
+		
+<span class="fc" id="L77">		Player p1 = state.GetPlayer(true);</span>
+<span class="fc" id="L78">		assertEquals(p1.getSide(), 1);</span>
+		
+<span class="fc" id="L80">		Player p2 = state.GetPlayer(false);</span>
+<span class="fc" id="L81">		assertEquals(p2.getSide(), 2);</span>
+<span class="fc" id="L82">	}</span>
+	
+	/*
+	@Test
+	public void GameState_CheckKeyManagerSpeed_Test() {
+		GameState state = new GameState();
+		state.init();
+		
+		KeyManager m = new KeyManager();
+		Button a = new Button(&quot;click&quot;);
+		KeyEvent e = new KeyEvent(a, 1, 20, KeyEvent.VK_END, KeyEvent.VK_END, '$');
+		m.keyPressed(e);
+		
+		state.checkKeyPressed(KeyEvent.VK_END);
+		
+		assertEquals(-10, state.GetXVel());
+	}
+	*/
+	
+	@Test
+	public void KeyManager_KeyPressed_KeyReleased() throws AWTException {
+<span class="fc" id="L103">		KeyManager m = new KeyManager();</span>
+<span class="fc" id="L104">		Button a = new Button(&quot;click&quot;);</span>
+<span class="fc" id="L105">		KeyEvent e = new KeyEvent(a, 1, 20, KeyEvent.VK_DOLLAR, KeyEvent.VK_DOLLAR, '$');</span>
+<span class="fc" id="L106">		m.keyPressed(e);</span>
+<span class="fc" id="L107">		m.keyReleased(e);</span>
+<span class="fc" id="L108">		assertTrue(true);</span>
+<span class="fc" id="L109">	}</span>
+	
+	@Test
+	public void PlayerIntersectBall() {
+<span class="fc" id="L113">		GameState state = new GameState();</span>
+<span class="fc" id="L114">		state.init();</span>
+		
+<span class="fc" id="L116">		Player A = new Player(5,(Game.height - 80)/2, 1);</span>
+<span class="fc" id="L117">		Rectangle ballA = new Rectangle(5, (Game.height - 80)/2, 70, 70);</span>
+<span class="fc" id="L118">		state.SetPlayer(A, true);</span>
+<span class="fc" id="L119">		state.SetBall(ballA);</span>
+<span class="fc" id="L120">		state.CallLimits();</span>
+<span class="fc" id="L121">		assertEquals(4, state.GetXVel());</span>
+		
+		
+<span class="fc" id="L124">		Player B = new Player(775, (Game.height - 80)/2, 2);</span>
+<span class="fc" id="L125">		Rectangle ballB = new Rectangle(775, (Game.height - 80)/2, 70, 70);</span>
+<span class="fc" id="L126">		state.SetPlayer(B, false);</span>
+<span class="fc" id="L127">		state.SetBall(ballB);</span>
+<span class="fc" id="L128">		state.CallLimits();</span>
+<span class="fc" id="L129">		assertEquals(-4, state.GetXVel());</span>
+		
+<span class="fc" id="L131">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>PongGame (02/12/2019 01:03:35)</div></body></html>

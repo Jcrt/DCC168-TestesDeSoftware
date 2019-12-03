@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StateManager.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">PongGame (02/12/2019 01:03:35)</a> &gt; <a href="../../index.html" class="el_group">PongGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pong.states</a> &gt; <span class="el_source">StateManager.java</span></div><h1>StateManager.java</h1><pre class="source lang-java linenums">package pong.states;
+
+import java.awt.Graphics;
+
+public class StateManager{
+	
+	private static final int numberStates = 4;
+<span class="fc" id="L8">	private static States[] states = new States[numberStates];</span>
+<span class="fc" id="L9">	private static int currentState = 0;</span>
+	
+<span class="fc" id="L11">	public static final int FPS = 0, MENU = 1, GAME = 2, HELP = 3;</span>
+		
+	public static void setState(int state) {
+<span class="fc" id="L14">		currentState = state;</span>
+<span class="fc" id="L15">		states[currentState].init();</span>
+<span class="fc" id="L16">	}</span>
+	
+	public static States getState() {
+<span class="fc" id="L19">		return states[currentState];</span>
+	}
+	
+	
+<span class="fc" id="L23">	public StateManager() {</span>
+<span class="fc" id="L24">		states[0] = new FPSState();</span>
+<span class="fc" id="L25">		states[1] = new MenuState();</span>
+<span class="fc" id="L26">		states[2] = new GameState();</span>
+<span class="fc" id="L27">		states[3] = new HelpState();</span>
+<span class="fc" id="L28">	}</span>
+	
+	public void update() {
+<span class="fc" id="L31">		states[currentState].update();</span>
+<span class="fc" id="L32">	}</span>
+	
+	public void render(Graphics g) {
+<span class="fc" id="L35">		states[currentState].render(g);</span>
+<span class="fc" id="L36">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>PongGame (02/12/2019 01:03:35)</div></body></html>

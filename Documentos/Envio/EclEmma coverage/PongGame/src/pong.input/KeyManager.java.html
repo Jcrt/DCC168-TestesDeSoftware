@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>KeyManager.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">PongGame (02/12/2019 01:03:35)</a> &gt; <a href="../../index.html" class="el_group">PongGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">pong.input</a> &gt; <span class="el_source">KeyManager.java</span></div><h1>KeyManager.java</h1><pre class="source lang-java linenums">package pong.input;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import pong.states.StateManager;
+
+<span class="fc" id="L8">public class KeyManager implements KeyListener {</span>
+
+<span class="fc" id="L10">	private boolean[] keys = new boolean[256];</span>
+	public static boolean w, s, up, down, speed, enter, f, esc;
+	
+	public void update() {
+<span class="fc" id="L14">		w = keys[KeyEvent.VK_W];</span>
+<span class="fc" id="L15">		s = keys[KeyEvent.VK_S];</span>
+<span class="fc" id="L16">		up = keys[KeyEvent.VK_UP];</span>
+<span class="fc" id="L17">		down = keys[KeyEvent.VK_DOWN];</span>
+<span class="fc" id="L18">		speed = keys[KeyEvent.VK_END];</span>
+<span class="fc" id="L19">		enter = keys[KeyEvent.VK_ENTER];</span>
+<span class="fc" id="L20">		f = keys[KeyEvent.VK_F];</span>
+<span class="fc" id="L21">		esc = keys[KeyEvent.VK_ESCAPE];</span>
+<span class="fc" id="L22">	}</span>
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+<span class="pc bpc" id="L26" title="1 of 4 branches missed.">		if(e.getKeyCode() &lt; 0 || e.getKeyCode() &gt; 255)</span>
+<span class="fc" id="L27">			return;</span>
+		
+<span class="fc" id="L29">		keys[e.getKeyCode()] = true;</span>
+		
+<span class="fc" id="L31">		StateManager.getState().checkKeyPressed(e.getKeyCode());</span>
+<span class="fc" id="L32">	}</span>
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">		if(e.getKeyCode() &lt; 0 || e.getKeyCode() &gt; 255)</span>
+<span class="fc" id="L37">			return;</span>
+		
+<span class="fc" id="L39">		keys[e.getKeyCode()] = false;</span>
+<span class="fc" id="L40">	}</span>
+		
+	@Override
+<span class="fc" id="L43">	public void keyTyped(KeyEvent e) {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>PongGame (02/12/2019 01:03:35)</div></body></html>
